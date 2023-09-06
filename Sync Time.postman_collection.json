@@ -1,0 +1,85 @@
+{
+	"info": {
+		"_postman_id": "bc9fc289-5319-454a-9422-18d197e62f64",
+		"name": "Sync Time",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17703119"
+	},
+	"item": [
+		{
+			"name": "Set Increment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"user_id\": \"1\",\r\n    \"current_time\": \"18:00:00\",\r\n    \"increment\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/set-time",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"set-time"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Time",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/get-time?user_id=2",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"get-time"
+					],
+					"query": [
+						{
+							"key": "user_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sync Time",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"current_user_id\": \"2\",\r\n    \"user_id\": \"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/sync-time",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"sync-time"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

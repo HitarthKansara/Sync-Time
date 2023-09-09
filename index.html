@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" type="text/css" href="./style.css" /> -->
+    <!-- <title>Socket Time Updates</title> -->
+    <style>
+      /* Apply a magical background */
+      body {
+        background-color: #0a0a0a; /* Dark background */
+        color: #fff; /* Text color */
+        font-family: "Arial", sans-serif;
+        text-align: center;
+        background-image: url("magical-background.jpg"); /* Replace with your magical background image */
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-blend-mode: multiply; /* Blend with background image */
+      }
+
+      /* Style the title with a glowing effect */
+      h1 {
+        color: #ffcc00; /* Golden yellow */
+        text-shadow: 0 0 15px #ffcc00; /* Glowing text effect */
+        font-size: 3em;
+        margin-top: 20px;
+      }
+
+      /* Style the time display */
+      #time,
+      #clock1,
+      #clock2 {
+        font-size: 2em;
+        margin-top: 20px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(255, 204, 0, 0.5); /* Glowing border effect */
+        color: #ffcc00; /* Golden yellow text */
+      }
+
+      /* Add a magical animation to the title (optional) */
+      h1::before {
+        content: "🌟 ";
+        animation: sparkle 2s linear infinite;
+      }
+
+      @keyframes sparkle {
+        0% {
+          transform: translateY(-10px);
+          opacity: 0;
+        }
+        50% {
+          transform: translateY(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(-10px);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Clock Updates</h1>
+    <div id="time"></div>
+    <div id="clock1"></div>
+    <div id="clock2"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      socket.on("time", (data) => {
+        document.getElementById(
+          "time"
+        ).textContent = `Current Time: ${data.time}`;
+      });
+
+      socket.on("clock1", (data) => {
+        document.getElementById(
+          "clock1"
+        ).textContent = `Current Time of User1: ${data}`;
+      });
+
+      socket.on("clock2", (data) => {
+        document.getElementById(
+          "clock2"
+        ).textContent = `Current Time of User2: ${data}`;
+      });
+    </script>
+  </body>
+</html>

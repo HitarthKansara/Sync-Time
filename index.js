@@ -1,12 +1,42 @@
 const express = require('express');
+const http = require('http');
+const socketIO = require('socket.io');
 const moment = require('moment');
 let nodeCache = require('node-cache');
 
 const app = express();
 
+const server = http.createServer(app);
+const io = socketIO(server);
+
 let cache = new nodeCache();
 
 app.use(express.json());
+
+
+// Serve the HTML file
+app.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
+// Socket.io connection
+io.on('connection', (socket) => {
+    console.log('A user connected');
+
+    // Send the updated time to the client every second
+    setInterval(() => {
+
+        socket.emit('time', { time: new Date().toLocaleTimeString() });
+
+        socket.emit('clock1', moment(getUserClockTime('1')).format('HH:mm:ss'));
+        socket.emit('clock2', moment(getUserClockTime('2')).format('HH:mm:ss'));
+
+    }, 1000);
+
+    socket.on('disconnect', () => {
+        console.log('User disconnected');
+    });
+});
 
 
 //user_id, clock_time, utc, increment
@@ -19,7 +49,6 @@ function setClockIncrement(user_id, clock_time, utc, increment) {
             utc: moment.utc().format('x'),
             increment
         };
-        console.log('data--->', data);
         cache.set(user_id, JSON.stringify(data));
         return clock_time;
 
@@ -71,7 +100,6 @@ function getUserClockTime(userId) {
         let currentTime = moment(moment().format('x'), 'x');
 
         let timeDuration = moment.duration(currentTime.diff(endTime)).as('milliseconds');
-        console.log('timeDuration--->', timeDuration);
 
         let timeToAdd = timeDuration / increment;
 
@@ -88,6 +116,10 @@ function getUserClockTime(userId) {
 //     "current_time": "18:00:00",
 //     "increment": 5
 // }
+
+setClockIncrement("1", "12:00:00", moment().utc(), "2");
+setClockIncrement("2", "18:00:00", moment().utc(), "1");
+
 
 app.post('/set-time', (req, res) => {
     try {
@@ -168,4 +200,4 @@ app.post('/sync-time', (req, res) => {
 
 
 
-app.listen(4000, () => console.log('Server running on port: ', 4000));
+server.listen(4000, () => console.log('Server running on port: ', 4000));

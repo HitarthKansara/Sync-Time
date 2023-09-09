@@ -25,6 +25,7 @@ I have created three apis:
 Please note that, 
 # First set-time api must be used in order to get user details 
 # I have used caching in nodejs, so every time any changes will be done in code, all data will be deleted, then one will have to add new data again
+# To see user's clock time : http://localhost:4000/
 
 
 #  Run npm run start to start node server

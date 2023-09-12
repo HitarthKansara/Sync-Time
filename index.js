@@ -46,7 +46,7 @@ function setClockIncrement(user_id, clock_time, utc, increment) {
 
         let data = {
             clock_time: moment(clock_time, 'HH:mm:ss').format('x'),
-            utc: moment.utc().format('x'),
+            utc: moment(utc, 'HH:mm:ss').format('x'),
             increment
         };
         cache.set(user_id, JSON.stringify(data));
@@ -124,9 +124,9 @@ setClockIncrement("2", "18:00:00", moment().utc(), "1");
 app.post('/set-time', (req, res) => {
     try {
 
-        let { user_id, increment, current_time } = req.body;
+        let { user_id, increment, utc, current_time } = req.body;
 
-        setClockIncrement(user_id, current_time, moment().utc(), increment);
+        setClockIncrement(user_id, current_time, utc, increment);
 
         return res.status(200).send({ message: 'Clock time set successfully', data: current_time });
 
